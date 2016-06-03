@@ -1,0 +1,32 @@
+{
+    "name": "nodelog",
+    "version": "0.0.1",
+    "description": "simple node logging utility with colored output and log level support",
+    "main": "index.js",
+    "scripts": {
+        "test": "node dev"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/blndev/npm-nodelog.git"
+    },
+    "keywords": [
+    "node",
+    "log",
+    "color",
+    "level",
+    "loglevel",
+    "output",
+    "console",
+    "console.log"
+  ],
+    "author": "blndev",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/blndev/npm-nodelog/issues"
+    },
+    "homepage": "https://github.com/blndev/npm-nodelog",
+    "dependencies": {
+        "cli-color": "^1.1.0"
+    }
+}
