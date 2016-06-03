@@ -2,7 +2,7 @@
 require('./index.js');
 var log = require('./index.js')({
     logLevel: 'all'
-});
+}, true);
 
 log.info('hello info %s and %s', 'here', 'there');
 log.error('simple error');
@@ -34,4 +34,9 @@ console.error('simple error');
 //disable the console manipulation
 var log = require('./index.js')({
     logLevel: 'all'
-}, true);
+});
+
+console.log('simple log');
+console.info('simple info');
+console.warn('simple warning');
+console.error('simple error');

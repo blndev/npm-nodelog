@@ -10,6 +10,9 @@ var logLevels = {
     'error': 4
 };
 
+//flag which helps to detect an existing initialization
+var consoleExtensionsInitialized = false;
+
 module.exports = function (options, disablecConsole) {
     options = options || {};
 
@@ -56,19 +59,17 @@ module.exports = function (options, disablecConsole) {
         return logType + new Date().toISOString();
     };
 
-    //flag which helps to detect an existing initialization
-    var initialized = false;
-
     //initialization
     (function () {
 
-        if (initialized) return;
+        if (consoleExtensionsInitialized) return;
         if (options.logLevel <= logLevels.debug)
-            console.log("initialize logger extension");
-
-        initialized = true;
+            console.log("initialize logger");
 
         if (!disablecConsole) {
+            if (options.logLevel <= logLevels.debug)
+                console.log("initialize console.log extension");
+            consoleExtensionsInitialized = true;
             ['log', 'info', 'warn', 'error'].forEach(function (logType) {
                 var org = console[logType].bind(console);
                 console[logType] = function () {
@@ -82,41 +83,42 @@ module.exports = function (options, disablecConsole) {
     }());
 
     var log = {
-        options: options
-    };
+        options: options,
+        //in the case that console.log should not be modified, we support log....() funcitons with colors
 
-    //in the case that console.log should not be modified, we support log....() funcitons
-
-    log.writeLine = function (logType, args) {
-        if (disablecConsole) {
-            args[0] = options.color[logType](options.prefix(logType)) + ' - ' + args[0];
+        writeLine: function (logType, args) {
+            //fallback for unknown logTypes
+            if (!options.color[logType]) logType = 'debug';
+            //we have to set the colors here
+            if (disablecConsole) {
+                args[0] = options.color[logType](options.prefix(logType)) + ' - ' + args[0];
+            }
+            switch (logType) {
+            case 'info':
+                console.info.apply(console, args);
+                break;
+            case 'warn':
+                console.warn.apply(console, args);
+                break;
+            case 'error':
+                console.error.apply(console, args);
+                break;
+            default:
+                console.log.apply(console, args);
+            }
+        },
+        debug: function () {
+            this.writeLine('debug', arguments);
+        },
+        info: function () {
+            this.writeLine('info', arguments);
+        },
+        warning: function () {
+            this.writeLine('warn', arguments);
+        },
+        error: function () {
+            this.writeLine('error', arguments);
         }
-        switch (logType) {
-        case 'info':
-            console.info.apply(console, args);
-            break;
-        case 'warn':
-            console.warn.apply(console, args);
-            break;
-        case 'error':
-            console.error.apply(console, args);
-            break;
-        default:
-            console.log.apply(console, args);
-        }
     };
-    log.debug = function () {
-        this.writeLine('debug', arguments);
-    };
-    log.info = function () {
-        this.writeLine('info', arguments);
-    };
-    log.warning = function () {
-        this.writeLine('warn', arguments);
-    };
-    log.error = function () {
-        this.writeLine('error', arguments);
-    };
-
     return log;
 };
