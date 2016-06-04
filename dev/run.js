@@ -9,7 +9,7 @@ var clc = require('cli-color');
 
 //load nodelog
 var log = require('../index.js')({
-    logLevel: 'all'
+    level: 'error'
 }, false);
 
 function writeLogs() {
@@ -36,6 +36,8 @@ writeLogs();
 //console.log('configured loglevel', log.options.logLevel)
 
 console.info(clc.white('change prefix (local / default) to "sample"'));
+log.important('change prefix (local / default) to "sample"');
+
 log.setPrefix(function () {
     return 'sample';
 });
@@ -51,8 +53,8 @@ writeLogs();
 
 console.info(clc.white('require nodelog again, with console'));
 //disable the console manipulation
-var log = require('../index.js')({
-    logLevel: 'all'
+/*var log = require('../index.js')({
+    level: 'warn'
 }, true);
-
+*/
 writeLogs();

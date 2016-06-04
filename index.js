@@ -12,9 +12,13 @@ var logLevels = {
 
 //global nodelog configuration
 var nodelog = {
-    global: {},
+    global: {
+        logLevel: logLevels.warning,
+    },
     console: {},
-    default: {}
+    default: {
+        color: {}
+    }
 };
 
 //flag which helps to detect an existing initialization
@@ -23,42 +27,61 @@ nodelog.console.ExtensionsInitialized = false;
 module.exports = function (options, enableConsole) {
     options = options || {};
 
-    //default log level is debug
-    options.logLevel = options.logLevel || '';
-    //console.log('configured log level text:', options.logLevel.toLowerCase());
-    switch (options.logLevel.toLowerCase()) {
-    case 'all':
-    case 'debug':
-    case 'log':
-    case 'verbose':
-        options.logLevel = logLevels.debug;
-        break;
-    case 'info':
-        options.logLevel = logLevels.info;
-        break;
-    case 'warning':
-    case 'warn':
-        options.logLevel = logLevels.warn;
-        break;
-    case 'error' || 'exception':
-        options.logLevel = logLevels.error;
-        break;
-    default:
-        console.log('using default log level');
-        options.logLevel = logLevels.debug;
+    //for performance we analyze strings only if they are given
+    if (options.level) {
+        //default log level is warning
+        options.level = options.level || 'debug';
+        //for the first call we have to analyze the string :-/
+        switch (options.level.toLowerCase()) {
+        case 'all':
+        case 'debug':
+        case 'log':
+        case 'verbose':
+            options.logLevel = logLevels.debug;
+            break;
+        case 'info':
+            options.logLevel = logLevels.info;
+            break;
+        case 'warning':
+        case 'warn':
+            options.logLevel = logLevels.warn;
+            break;
+        case 'error' || 'exception':
+            options.logLevel = logLevels.error;
+            break;
+        default:
+            console.log('using default log level');
+            if (options.logLevel != nodelog.default.logLevel)
+                options.logLevel = logLevels.debug;
+        }
     }
-    //console.log('using log level:', options.logLevel);
+    options.logLevel = options.logLevel || nodelog.global.logLevel;
+    //copy back, because its the new default for later instances
+    nodelog.global.logLevel = options.logLevel;
 
-    //set default colors
-    options.color = options.color || {};
-    options.color.log = options.color.log || function (args) {
+
+    //set default colors.
+    nodelog.default.color.log = nodelog.default.color.log || function (args) {
         return args;
     };
-    options.color.debug = options.color.log;
-    options.color.info = options.color.info || clc.magenta;
-    options.color.warn = options.color.warn || clc.yellow;
-    options.color.error = options.color.error || clc.red;
+    nodelog.default.color.debug = nodelog.default.color.log;
+    nodelog.default.color.info = nodelog.default.color.info || clc.magenta;
+    nodelog.default.color.warn = nodelog.default.color.warn || clc.yellow;
+    nodelog.default.color.error = nodelog.default.color.error || clc.red;
+    nodelog.default.color.important = nodelog.default.color.important || clc.white;
 
+    //todo p2: copy from globale default
+    if (!options.color) {
+        //simple, just use te default
+        options.color = options.color || nodelog.default.color;
+    } else {
+        //some colors are specified by the user
+        options.color.log = options.color.log || fnodelog.default.color.log;
+        options.color.debug = options.color.log;
+        options.color.info = options.color.info || nodelog.default.color.info;
+        options.color.warn = options.color.warn || nodelog.default.color.warn;
+        options.color.error = options.color.error || nodelog.default.color.error;
+    }
     //set default prefix
     //use options, if hat is not set a configured global, 
     //if that is not set use our defualt
@@ -90,7 +113,9 @@ module.exports = function (options, enableConsole) {
             ['log', 'info', 'warn', 'error'].forEach(function (logType) {
                 var org = console[logType].bind(console);
                 console[logType] = function () {
-                    if (logLevels[logType] < options.logLevel) return;
+
+                    //analyze og levels
+                    if (logLevels[logType] < nodelog.global.logLevel) return;
 
                     arguments[0] = options.color[logType](nodelog.global.prefix(logType)) + ' - ' + arguments[0];
                     org.apply(console, arguments);
@@ -117,6 +142,8 @@ module.exports = function (options, enableConsole) {
         writeLine: function (logType, args) {
             //fallback for unknown logTypes
             if (!options.color[logType]) logType = 'debug';
+            if (logLevels[logType] < options.logLevel) return;
+
             //we have to set the colors here if the console command is not modified
             if (!nodelog.console.ExtensionsInitialized) {
                 args[0] = options.color[logType](options.prefix(logType)) + ' - ' + args[0];
@@ -146,6 +173,11 @@ module.exports = function (options, enableConsole) {
         },
         error: function () {
             this.writeLine('error', arguments);
+        },
+        important: function () {
+            arguments[0] = nodelog.default.color.important(' --> ' +
+                arguments[0] + ' <--');
+            console.log.apply(console, arguments);
         }
     };
     return log;

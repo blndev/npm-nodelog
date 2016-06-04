@@ -3,7 +3,7 @@
 var clc = require('cli-color');
 
 var log = require('../index.js')({
-    logLevel: 'all'
+    level: 'all'
 });
 
 function writeLogs() {
