@@ -14,3 +14,6 @@ var log = require("nodelog")({
 console.log('hello world');
 console.error('this is an error');
 `````
+
+## Known Issues
+--no-color parameter is currently not supported
