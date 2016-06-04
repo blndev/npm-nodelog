@@ -11,19 +11,18 @@ var logLevels = {
 };
 
 //global nodelog configuration
-var nodelog = {};
+var nodelog = {
+    global: {},
+    console: {},
+    default: {}
+};
 
 //flag which helps to detect an existing initialization
-nodelog.consoleExtensionsInitialized = false;
+nodelog.console.ExtensionsInitialized = false;
 
-module.exports = function (options, disablecConsole) {
+module.exports = function (options, enableConsole) {
     options = options || {};
-    if (nodelog.consoleExtensionsInitialized) {
-        //if the console is already initialized, it is not possible to reset that
-        disablecConsole = false;
-    }
-    //save the value because it has to be resued for all instances
-    nodelog.disableConsole = disablecConsole;
+
     //default log level is debug
     options.logLevel = options.logLevel || '';
     //console.log('configured log level text:', options.logLevel.toLowerCase());
@@ -61,30 +60,39 @@ module.exports = function (options, disablecConsole) {
     options.color.error = options.color.error || clc.red;
 
     //set default prefix
-    options.prefix = options.prefix || function (logType) {
+    //use options, if hat is not set a configured global, 
+    //if that is not set use our defualt
+    options.prefix = options.prefix || nodelog.global.prefix || function (logType) {
         if (logType) logType = '(' + logType + ')\t';
         else logType = '';
         return logType + new Date().toISOString();
     };
 
+    //if there is no public prefix, use the configured one
+    nodelog.global.prefix = nodelog.global.prefix || options.prefix;
+
+    //save the options to public if they are not there
+    //TODO P2: use option by option
+    nodelog.default = nodelog.default || options;
+
     //initialization
     (function () {
 
-        if (nodelog.consoleExtensionsInitialized) return;
+        if (nodelog.console.ExtensionsInitialized) return;
 
         if (options.logLevel <= logLevels.debug)
             console.log("initialize logger");
 
-        if (!disablecConsole) {
+        if (enableConsole) {
             if (options.logLevel <= logLevels.debug)
                 console.log("initialize console.log extension");
-            nodelog.consoleExtensionsInitialized = true;
+            nodelog.console.ExtensionsInitialized = true;
             ['log', 'info', 'warn', 'error'].forEach(function (logType) {
                 var org = console[logType].bind(console);
                 console[logType] = function () {
                     if (logLevels[logType] < options.logLevel) return;
 
-                    arguments[0] = options.color[logType](options.prefix(logType)) + ' - ' + arguments[0];
+                    arguments[0] = options.color[logType](nodelog.global.prefix(logType)) + ' - ' + arguments[0];
                     org.apply(console, arguments);
                 };
             });
@@ -92,14 +100,25 @@ module.exports = function (options, disablecConsole) {
     }());
 
     var log = {
-        options: options,
+        options1: options,
+
+        //publish loglevels on log object
+        logLevels: logLevels,
         //in the case that console.log should not be modified, we support log....() funcitons with colors
+
+        setPrefix: function (func) {
+            options.prefix = func;
+            //if (!nodelog.console.ExtensionsInitialized)
+            nodelog.global.prefix = func;
+        },
+
+        //TODO P1: Set LogLevel + SetColors
 
         writeLine: function (logType, args) {
             //fallback for unknown logTypes
             if (!options.color[logType]) logType = 'debug';
             //we have to set the colors here if the console command is not modified
-            if (nodelog.disableConsole) {
+            if (!nodelog.console.ExtensionsInitialized) {
                 args[0] = options.color[logType](options.prefix(logType)) + ' - ' + args[0];
             }
             switch (logType) {
