@@ -4,48 +4,55 @@
 
 */
 'use strict';
-require('../index.js');
+//helper to switch the color later on
+var clc = require('cli-color');
+
+//load nodelog
 var log = require('../index.js')({
     logLevel: 'all'
 }, false);
 
-//helper to switch the color later on
-var clc = require('cli-color');
+function writeLogs() {
+    console.log('dev console log');
+    console.info('dev console info');
+    console.warn('dev console warning');
+    console.error('dev console error');
 
-log.info('dev log info %s and %s', 'here', 'there');
-log.error('dev log error');
-log.warning('dev log warning');
-log.debug('dev log debug');
-
-//console.log('log object:', log);
-console.log('configured loglevel', log.options.logLevel)
-
-console.log('dev console log');
-console.info('dev console info');
-console.warn('dev console warning');
-console.error('dev console error');
-
-console.info(clc.white('change prefix to "sample"'));
-log.options.prefix = function () {
-    return 'sample';
+    log.info('dev log info');
+    log.error('dev log error');
+    log.warning('dev log warning');
+    log.debug('dev log debug');
 }
 
-log.options.color.log = clc.blue;
-console.log('dev simple log');
-console.info('dev simple info');
-console.warn('dev simple warning');
-console.error('dev simple error');
+
+writeLogs();
+
+//log.options.logLevel = log.logLevels.warn;
+//console.log('configured loglevel', log.options.logLevel)
+
+writeLogs();
+
+//log.options.logLevel = log.logLevels.debug;
+//console.log('configured loglevel', log.options.logLevel)
+
+console.info(clc.white('change prefix (local / default) to "sample"'));
+log.setPrefix(function () {
+    return 'sample';
+});
+
+log.options1.color.log = clc.blue;
+writeLogs();
 
 console.info(clc.white('load second file'));
 require('./second.js');
+console.info(clc.white('after second file'));
 
-console.info(clc.white('require nodelog again'));
+writeLogs();
+
+console.info(clc.white('require nodelog again, with console'));
 //disable the console manipulation
 var log = require('../index.js')({
     logLevel: 'all'
-});
+}, true);
 
-console.log('simple log');
-console.info('simple info');
-console.warn('simple warning');
-console.error('simple error');
+writeLogs();
