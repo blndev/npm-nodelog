@@ -10,12 +10,20 @@ var logLevels = {
     'error': 4
 };
 
+//global nodelog configuration
+var nodelog = {};
+
 //flag which helps to detect an existing initialization
-var consoleExtensionsInitialized = false;
+nodelog.consoleExtensionsInitialized = false;
 
 module.exports = function (options, disablecConsole) {
     options = options || {};
-
+    if (nodelog.consoleExtensionsInitialized) {
+        //if the console is already initialized, it is not possible to reset that
+        disablecConsole = false;
+    }
+    //save the value because it has to be resued for all instances
+    nodelog.disableConsole = disablecConsole;
     //default log level is debug
     options.logLevel = options.logLevel || '';
     //console.log('configured log level text:', options.logLevel.toLowerCase());
@@ -53,7 +61,7 @@ module.exports = function (options, disablecConsole) {
     options.color.error = options.color.error || clc.red;
 
     //set default prefix
-    options.prefix = function (logType) {
+    options.prefix = options.prefix || function (logType) {
         if (logType) logType = '(' + logType + ')\t';
         else logType = '';
         return logType + new Date().toISOString();
@@ -62,14 +70,15 @@ module.exports = function (options, disablecConsole) {
     //initialization
     (function () {
 
-        if (consoleExtensionsInitialized) return;
+        if (nodelog.consoleExtensionsInitialized) return;
+
         if (options.logLevel <= logLevels.debug)
             console.log("initialize logger");
 
         if (!disablecConsole) {
             if (options.logLevel <= logLevels.debug)
                 console.log("initialize console.log extension");
-            consoleExtensionsInitialized = true;
+            nodelog.consoleExtensionsInitialized = true;
             ['log', 'info', 'warn', 'error'].forEach(function (logType) {
                 var org = console[logType].bind(console);
                 console[logType] = function () {
@@ -89,8 +98,8 @@ module.exports = function (options, disablecConsole) {
         writeLine: function (logType, args) {
             //fallback for unknown logTypes
             if (!options.color[logType]) logType = 'debug';
-            //we have to set the colors here
-            if (disablecConsole) {
+            //we have to set the colors here if the console command is not modified
+            if (nodelog.disableConsole) {
                 args[0] = options.color[logType](options.prefix(logType)) + ' - ' + args[0];
             }
             switch (logType) {

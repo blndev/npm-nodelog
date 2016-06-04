@@ -16,5 +16,5 @@ multiple requires
 output with different levels
 
 
-
+test also without configuration and support no color attribute
 */
