@@ -42,7 +42,7 @@ log.setPrefix(function () {
     return 'sample';
 });
 
-log.options1.color.log = clc.blue;
+log.setColor(log.logLevels.debug, clc.blue)
 writeLogs();
 
 console.info(clc.white('load second file'));

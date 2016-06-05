@@ -10,6 +10,9 @@ var logLevels = {
     'error': 4
 };
 
+clc.nocolor = function (args) {
+    return args;
+};
 //global nodelog configuration
 var nodelog = {
     global: {
@@ -17,7 +20,14 @@ var nodelog = {
     },
     console: {},
     default: {
-        color: {}
+        color: {
+            log: clc.nocolor,
+            debug: clc.nocolor,
+            info: clc.magenta,
+            warn: clc.yellow,
+            error: clc.red,
+            important: clc.white
+        }
     }
 };
 
@@ -64,23 +74,18 @@ module.exports = function (options, enableConsole) {
     nodelog.default.color.log = nodelog.default.color.log || function (args) {
         return args;
     };
-    nodelog.default.color.debug = nodelog.default.color.log;
-    nodelog.default.color.info = nodelog.default.color.info || clc.magenta;
-    nodelog.default.color.warn = nodelog.default.color.warn || clc.yellow;
-    nodelog.default.color.error = nodelog.default.color.error || clc.red;
-    nodelog.default.color.important = nodelog.default.color.important || clc.white;
 
-    //todo p2: copy from globale default
     if (!options.color) {
         //simple, just use te default
         options.color = options.color || nodelog.default.color;
     } else {
-        //some colors are specified by the user
-        options.color.log = options.color.log || fnodelog.default.color.log;
+        //some colors are specified by the user, so figure out which
+        options.color.log = options.color.log || options.color.debug || nodelog.default.color.log || nodelog.default.color.log;
         options.color.debug = options.color.log;
         options.color.info = options.color.info || nodelog.default.color.info;
         options.color.warn = options.color.warn || nodelog.default.color.warn;
         options.color.error = options.color.error || nodelog.default.color.error;
+        options.color.important = options.color.important || nodelog.default.color.importantx;
     }
     //set default prefix
     //use options, if hat is not set a configured global, 
@@ -125,7 +130,7 @@ module.exports = function (options, enableConsole) {
     }());
 
     var log = {
-        options1: options,
+        options: options,
 
         //publish loglevels on log object
         logLevels: logLevels,
@@ -135,6 +140,14 @@ module.exports = function (options, enableConsole) {
             options.prefix = func;
             //if (!nodelog.console.ExtensionsInitialized)
             nodelog.global.prefix = func;
+        },
+
+        setColor: function (loglevel, color) {
+            options.color[loglevel] = color;
+        },
+
+        getColor: function (loglevel) {
+            return options.color[loglevel];
         },
 
         //TODO P1: Set LogLevel + SetColors
