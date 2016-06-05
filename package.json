@@ -4,7 +4,8 @@
     "description": "simple node logging utility with colored output and log level support",
     "main": "index.js",
     "scripts": {
-        "test": "node dev"
+        "start": "node dev/run.js",
+        "test": "mocha"
     },
     "repository": {
         "type": "git",
@@ -33,5 +34,8 @@
     "homepage": "https://github.com/blndev/npm-nodelog",
     "dependencies": {
         "cli-color": "^1.1.0"
+    },
+    "devDependencies": {
+        "chai": "^3.5.0",
     }
 }
