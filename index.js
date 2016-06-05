@@ -138,7 +138,7 @@
         }());
 
         var log = {
-            options: options,
+            //options: options,
 
             //publish loglevels on log object
             logLevels: nodelog.logLevels,
