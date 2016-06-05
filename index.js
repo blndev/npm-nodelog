@@ -69,12 +69,6 @@ module.exports = function (options, enableConsole) {
     //copy back, because its the new default for later instances
     nodelog.global.logLevel = options.logLevel;
 
-
-    //set default colors.
-    nodelog.default.color.log = nodelog.default.color.log || function (args) {
-        return args;
-    };
-
     if (!options.color) {
         //simple, just use te default
         options.color = options.color || nodelog.default.color;
