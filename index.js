@@ -101,8 +101,9 @@
         //if there is no public prefix, use the configured one
         nodelog.global.prefix = nodelog.global.prefix || options.prefix;
 
+        //console.log(options);
+
         //save the options to public if they are not there
-        //TODO P2: use option by option
         nodelog.default = nodelog.default || options;
 
         //initialization
