@@ -1,6 +1,8 @@
 nodelog
 =======
 
+[![Build Status](https://travis-ci.org/blndev/npm-nodelog.svg?branch=master)](https://travis-ci.org/blndev/npm-nodelog)
+
 Nodelog is a very small library which allows you to see colored log outut in the console and manage different log levels.
 In addition is every log message enhanced with a preefix, which contains a timestamp by default.
 If you activate it, then also the default _console.log_ calls are handled by this library.
