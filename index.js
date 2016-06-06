@@ -113,14 +113,17 @@
                 return;
             }
 
+            /*
             if (options.logLevel <= nodelog.logLevels.debug) {
                 console.log("initialize logger");
             }
+            */
 
             if (enableConsole) {
                 if (options.logLevel <= nodelog.logLevels.debug) {
                     console.log("initialize console.log extension");
                 }
+
                 nodelog.console.ExtensionsInitialized = true;
             ['log', 'info', 'warn', 'error'].forEach(function (logType) {
                     var org = console[logType].bind(console);
@@ -138,6 +141,7 @@
             }
         }());
 
+
         var log = {
             //options: options,
 
@@ -145,10 +149,30 @@
             logLevels: nodelog.logLevels,
             //in the case that console.log should not be modified, we support log....() funcitons with colors
 
+            /**           
+             * set the log level for current instance and future instances           
+             * @param {type} loglevel log.logLevels.debug etc.           
+             */
+            setLogLevel: function (loglevel) {
+                //TODO P3 check for instance of loglevel object
+                options.logLevel = loglevel;
+                //save value for inheritance
+                nodelog.global.logLevel = loglevel;
+            },
+
+            getLogLevel: function () {
+                return options.logLevel;
+            },
+
             setPrefix: function (func) {
                 options.prefix = func;
                 //if (!nodelog.console.ExtensionsInitialized)
+                //save value for inheritance
                 nodelog.global.prefix = func;
+            },
+
+            getPrefix: function () {
+                return options.prefix;
             },
 
             setColor: function (loglevel, color) {

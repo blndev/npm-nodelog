@@ -2,7 +2,7 @@
 var assert = require('chai').assert;
 var clc = require('cli-color');
 
-describe('log config handling', function () {
+describe('log settings tests', function () {
 
     var log;
     before(function () {
