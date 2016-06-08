@@ -1,6 +1,6 @@
 {
     "name": "nodelog",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "simple node logging utility with colored output and log level support",
     "main": "index.js",
     "scripts": {

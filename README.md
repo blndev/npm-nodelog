@@ -2,10 +2,25 @@ nodelog
 =======
 
 [![Build Status](https://travis-ci.org/blndev/npm-nodelog.svg?branch=master)](https://travis-ci.org/blndev/npm-nodelog)
+[![npm version](https://badge.fury.io/js/nodelog.svg)](https://badge.fury.io/js/nodelog)
+[![GitHub version](https://badge.fury.io/gh/blndev%2Fnpm-nodelog.svg)](https://badge.fury.io/gh/blndev%2Fnpm-nodelog)
 
 Nodelog is a very small library which allows you to see colored log outut in the console and manage different log levels.
 In addition is every log message enhanced with a preefix, which contains a timestamp by default.
 If you activate it, then also the default _console.log_ calls are handled by this library.
+
+The package is available via npm: 
+https://www.npmjs.com/package/nodelog
+
+Installation
+------------
+Use the node package manager to install this lib.
+
+Enter in your console:
+
+```bash
+$ npm install nodelog --save-dev
+```
 
 LogLevel
 --------
@@ -24,7 +39,7 @@ You can define own colors or styles by setting the values on the constructor or 
 
 ### Constructor Settings
 Here all supported constructor options with sampel data:
-`````
+```js
 { 
   level: 'all',
   color: 
@@ -36,14 +51,14 @@ Here all supported constructor options with sampel data:
      error: clc.red.big
    },
   prefix: function(logType) { return ' -->' + logType + ' -->'; }
-`````
+```
 
 Samples
 -------
 We will provide a file called samples.js in our node_module folder.
 
 ### Log all Messages form your sources:
-`````
+```js
 var log = require("nodelog")({
     logLevel: 'all' //'debug' is also possible
 });
@@ -52,11 +67,11 @@ var log = require("nodelog")({
 log.debug('hello world');
 //a error log
 log.error('this is an error');
-`````
+```
 
 ### Log messages via console.log
 Log all Messages form your sources:
-`````
+```js
 var log = require("nodelog")({
     logLevel: 'debug'
 }, true);
@@ -67,10 +82,10 @@ console.log('way two via console.log');
 //error log
 log.error('error via log object')
 console.error('error via console');
-`````
+```
 
 ### Change the Prefix
-`````
+```js
 var log = require("nodelog")({
     logLevel: 'debug'
 }, true);
@@ -78,7 +93,7 @@ log.setPrefix(function () {
     return 'sample';
 });
 console.log('this is a message via console.log');
-`````
+```
 The result is:
 
 _sample - this is a message via console.log_
