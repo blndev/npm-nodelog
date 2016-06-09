@@ -2,10 +2,15 @@ nodelog
 =======
 
 [![Build Status](https://travis-ci.org/blndev/npm-nodelog.svg?branch=master)](https://travis-ci.org/blndev/npm-nodelog)
-[![npm version](https://badge.fury.io/js/nodelog.svg)](https://badge.fury.io/js/nodelog)
 [![GitHub version](https://badge.fury.io/gh/blndev%2Fnpm-nodelog.svg)](https://badge.fury.io/gh/blndev%2Fnpm-nodelog)
+[![Dependency Status](https://gemnasium.com/badges/github.com/blndev/npm-nodelog.svg)](https://gemnasium.com/github.com/blndev/npm-nodelog)
+[![npm version](https://badge.fury.io/js/nodelog.svg)](https://badge.fury.io/js/nodelog)
 
-Nodelog is a very small library which allows you to see colored log outut in the console and manage different log levels.
+
+
+[![NPM](https://nodei.co/npm/nodelog.png)](https://nodei.co/npm/nodelog/)
+
+Nodelog is a very small and easy to use library which allows you to see colored log outut in the console and manage different log levels.
 In addition is every log message enhanced with a preefix, which contains a timestamp by default.
 If you activate it, then also the default _console.log_ calls are handled by this library.
 
