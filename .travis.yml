@@ -6,10 +6,18 @@ node_js:
   - "0.12"
   
 before_script:
-  - npm install -g gulp mocha 
+  - npm install -g gulp
+  
+script:
+ - npm run istanbul
+
+after_script:
+ - codeclimate-test-reporter < lcov.info
 
 #script: gulp
-
+addons:
+  code_climate:
+  
 cache:
   bundler: true
   directories:
