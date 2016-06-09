@@ -1,17 +1,18 @@
 {
-    "name": "nodelog",
-    "version": "0.3.1",
-    "description": "simple node logging utility with colored output and log level support",
-    "main": "index.js",
-    "scripts": {
-        "start": "node dev/run.js",
-        "test": "mocha"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/blndev/npm-nodelog.git"
-    },
-    "keywords": [
+  "name": "nodelog",
+  "version": "0.3.1",
+  "description": "simple node logging utility with colored output and log level support",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dev/run.js",
+    "test": "node ./node_modules/mocha/bin/_mocha",
+    "istanbul": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blndev/npm-nodelog.git"
+  },
+  "keywords": [
     "node",
     "log",
     "color",
@@ -21,21 +22,24 @@
     "console",
     "console.log"
   ],
-    "author": "blndev",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/blndev/npm-nodelog/issues"
-    },
-    "files": [
+  "author": "blndev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blndev/npm-nodelog/issues"
+  },
+  "files": [
     "LICENSE",
     "Readme.md",
     "index.js"
   ],
-    "homepage": "https://github.com/blndev/npm-nodelog",
-    "dependencies": {
-        "cli-color": "^1.1.0"
-    },
-    "devDependencies": {
-        "chai": "^3.5.0"
-    }
+  "homepage": "https://github.com/blndev/npm-nodelog",
+  "dependencies": {
+    "cli-color": "^1.1.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.9",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.5.3"
+  }
 }
