@@ -2,6 +2,7 @@ nodelog
 =======
 
 [![Build Status](https://travis-ci.org/blndev/npm-nodelog.svg?branch=master)](https://travis-ci.org/blndev/npm-nodelog)
+[![Coverage Status](https://coveralls.io/repos/github/blndev/npm-nodelog/badge.svg?branch=master)](https://coveralls.io/github/blndev/npm-nodelog?branch=master)
 [![GitHub version](https://badge.fury.io/gh/blndev%2Fnpm-nodelog.svg)](https://badge.fury.io/gh/blndev%2Fnpm-nodelog)
 [![Dependency Status](https://gemnasium.com/badges/github.com/blndev/npm-nodelog.svg)](https://gemnasium.com/github.com/blndev/npm-nodelog)
 [![npm version](https://badge.fury.io/js/nodelog.svg)](https://badge.fury.io/js/nodelog)
