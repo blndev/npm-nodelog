@@ -85,7 +85,7 @@
                     break;
                 default:
                     console.log('using default log level');
-                    if (options.logLevel != nodelog.default.logLevel) {
+                    if (options.logLevel !== nodelog.default.logLevel) {
                         options.logLevel = nodelog.logLevels.debug;
                     }
             }
