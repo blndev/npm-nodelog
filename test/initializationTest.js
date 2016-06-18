@@ -2,13 +2,16 @@
 'use strict';
 var chai = require('chai');
 var assert = chai.assert; //http://chaijs.com/api/assert/
-var expect = chai.expect; //http://chaijs.com/api/bdd/#method_language-chains
+//var expect = chai.expect; //http://chaijs.com/api/bdd/#method_language-chains
+var source = '../index.js';
 
-describe('initialization tests', function () {
+describe('initialization', function () {
 
-    var log, abc;
+    var log;
     before(function () {
-        log = require('../index.js')();
+        log = require(source)({
+            useDefault: true
+        });
     });
 
     describe('after calling require',
@@ -17,29 +20,9 @@ describe('initialization tests', function () {
                 assert.isDefined(log);
             });
         });
-    describe('our instance', function () {
-        it('should contain the defined interface functions', function () {
-            assert.isDefined(log.logLevels, 'loglevels are not available');
-
-            assert.isFunction(log.setColor, 'setColor is not available');
-            assert.isFunction(log.getColor, 'getColor is not available');
-
-            assert.isFunction(log.setPrefix, 'setPrefix is not available');
-
-            assert.isFunction(log.debug, 'log.debug is not available');
-            assert.isFunction(log.info, 'log.info is not available');
-            assert.isFunction(log.warning, 'log.warning is not available');
-            assert.isFunction(log.error, 'log.error is not available');
-            assert.isFunction(log.important, 'log.important is not available');
-
-        });
-
-        it('should contains all known logLevels', function () {
-            expect(log.logLevels).to.include.keys('debug', 'info', 'warning', 'warn', 'error');
-        });
-    });
 
     describe('a new instance', function () {
+
         it('should inherit changed loglevel', function () {
 
             var targetLevel = log.logLevels.debug;
@@ -48,7 +31,7 @@ describe('initialization tests', function () {
             log.setLogLevel(targetLevel);
             assert.equal(targetLevel, log.getLogLevel(), 'set and get loglevel failed');
 
-            var log2 = require('../index.js')();
+            var log2 = require(source)();
             assert.equal(targetLevel, log2.getLogLevel(), 'inherit loglevel failed, instance 2 has different level');
         });
 
@@ -64,7 +47,7 @@ describe('initialization tests', function () {
             log.setPrefix(targetPrefix);
             assert.equal(targetPrefix, log.getPrefix(), 'set and get prefix failed');
 
-            var log2 = require('../index.js')();
+            var log2 = require(source)();
 
             //test that the inheterance is done and we did not use the function from level one
             log.setPrefix(function (level) {
@@ -79,5 +62,18 @@ describe('initialization tests', function () {
             //restore original
             log.setPrefix(orgPrefix);
         });
+
+        xit('should inherit changed colors', function () {
+
+            var targetLevel = log.logLevels.debug;
+            assert.notEqual(targetLevel, log.getLogLevel(), 'default loglevel is test loglevel, please change the test settings');
+
+            log.setLogLevel(targetLevel);
+            assert.equal(targetLevel, log.getLogLevel(), 'set and get loglevel failed');
+
+            var log2 = require('../index.js')();
+            assert.equal(targetLevel, log2.getLogLevel(), 'inherit loglevel failed, instance 2 has different level');
+        });
+
     });
 });

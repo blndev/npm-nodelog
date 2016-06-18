@@ -46,7 +46,7 @@ Configuration Properties
 For the color management we use cli-color.
 You can define own colors or styles by setting the values on the constructor or via set Methods described later.
 
-### Constructor Settings
+### Constructor Settings / Options
 Here all supported constructor options with sampel data:
 ```js
 { 
@@ -62,6 +62,13 @@ Here all supported constructor options with sampel data:
   prefix: function(logType) { return ' -->' + logType + ' -->'; }
 ```
 
+To reset all modifications on options or interrupt the inheritance of options you can use the following property:
+```js
+  var inst = require(source)({
+    useDefault: true
+  });
+```
+            
 Samples
 -------
 We will provide a file called samples.js in our node_module folder.
