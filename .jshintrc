@@ -1,0 +1,28 @@
+{
+
+    "node": true, //nodejs,
+    "browser": false, //browser support
+
+    "strict": true, //use strict is a must (alternate implied)
+    "undef": true, //error if undefined vars
+    "unused": true, //error if unused vars
+    "curly": true, //expect curly braces on every block
+    "eqeqeq": true, //=== !== instead of == !=
+    "latedef": true, //variable used before defined
+    "nonew": true, //forec to assign constructor output to a variable
+    "shadow": false, //duplicated declaration of variables
+
+    //deprecated because of stylecheck
+    //but to use before switching to eslint
+    "quotmark": "single",
+    "newcap": true, //constructors has to start with an upper case char
+    "maxlen": 130, //max 80 chars in line
+    "camelcase": true, //camelcase is a must
+
+    //other
+    "globals": {
+        "test1234": true
+    },
+    "maxcomplexity": 10, //cyclomatic complexity
+    "maxdepth": 3 //max depth of blocks
+}
