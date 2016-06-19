@@ -16,7 +16,7 @@ function writeLogs() {
     log.error('second log error');
     log.warning('second log warning');
     log.debug('second log debug');
-};
+}
 
 writeLogs();
 console.info(clc.white('change prefix to "abc"'));

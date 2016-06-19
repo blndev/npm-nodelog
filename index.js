@@ -1,7 +1,7 @@
 /*jslint node: true */
 (function () {
     'use strict';
-    var clc = require("cli-color");
+    var clc = require('cli-color');
 
     //a local extension to set no color
     clc.nocolor = function (args) {
@@ -126,7 +126,7 @@
 
             if (enableConsole) {
                 if (options.logLevel <= nodelog.logLevels.debug) {
-                    console.log("initialize console.log extension");
+                    console.log('initialize console.log extension');
                 }
 
                 nodelog.console.ExtensionsInitialized = true;

@@ -1,4 +1,3 @@
-/*jslint node: true */
 'use strict';
 var chai = chai || require('chai');
 var assert = chai.assert; //http://chaijs.com/api/assert/

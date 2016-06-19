@@ -12,6 +12,9 @@ var log = require('../index.js')({
     level: 'error'
 }, false);
 
+//log.important(nodelog);
+console.log(log);
+
 function writeLogs() {
     console.log('dev console log');
     console.info('dev console info');
@@ -23,7 +26,6 @@ function writeLogs() {
     log.warning('dev log warning');
     log.debug('dev log debug');
 }
-
 
 writeLogs();
 
@@ -42,7 +44,7 @@ log.setPrefix(function () {
     return 'sample';
 });
 
-log.setColor(log.logLevels.debug, clc.blue)
+log.setColor(log.logLevels.debug, clc.blue);
 writeLogs();
 
 console.info(clc.white('load second file'));
