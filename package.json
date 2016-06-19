@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dev/run.js",
     "test": "node ./node_modules/mocha/bin/_mocha",
-    "istanbul": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
+    "istanbul": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000",
+    "stylecheck": "./node_modules/jshint/bin/jshint --reporter=node_modules/jshint-stylish index.js"
   },
   "repository": {
     "type": "git",
@@ -39,7 +40,11 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "coveralls": "^2.11.9",
+    "gulp": "^3.9.1",
+    "gulp-jshint": "^2.0.1",
     "istanbul": "^0.4.3",
+    "jshint": "^2.9.2",
+    "jshint-stylish": "^2.2.0",
     "mocha": "^2.5.3"
   }
 }
