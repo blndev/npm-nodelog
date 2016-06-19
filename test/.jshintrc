@@ -2,19 +2,23 @@
     "es5": true,
     "expr": true,
     "node": true,
+    "mocha": false, //not working because it shows errors of double defined expect
+    "globals": {
+        /* MOCHA */
+        "describe": false,
+        "xdescribe": false,
+
+        "it": false,
+        "xit": false,
+
+        "before": false,
+        "beforeEach": false,
+        "after": false,
+        "afterEach": false,
+        "expect": false
+    },
     "predef": [
-    "jasmine",
-    "describe",
-    "xdescribe",
-    "before",
-    "beforeEach",
-    "after",
-    "afterEach",
-    "it",
-    "xit",
-    "it",
     "inject",
-    "expect",
     "spyOn"
     ]
 }
